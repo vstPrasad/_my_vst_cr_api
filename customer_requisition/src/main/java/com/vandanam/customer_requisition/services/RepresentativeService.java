@@ -46,6 +46,31 @@ public class RepresentativeService {
         }
     }
 
+    public RepresentativeDTO updateRepresentative(String id, RepresentativeDTO representativeDTO) {
+        // Fetch the existing representative
+        Representative existingRepresentative = representativeRepository.findById(id).orElse(null);
+        if (existingRepresentative != null) {
+            // Update fields
+            existingRepresentative.setName(representativeDTO.getName());
+            existingRepresentative.setMobile(representativeDTO.getMobile());
+            existingRepresentative.setEmail(representativeDTO.getEmail());
+            existingRepresentative.setPassword(representativeDTO.getPassword());
+            existingRepresentative.setAddressPlaceId(representativeDTO.getAddressPlaceId());
+            existingRepresentative.setPlaceType(representativeDTO.getPlaceType());
+            existingRepresentative.setPlaceNumber(representativeDTO.getPlaceNumber());
+            existingRepresentative.setEducationalCredits(representativeDTO.getEducationalCredits());
+            existingRepresentative.setDob(representativeDTO.getDob());
+            existingRepresentative.setYearsOfExperience(representativeDTO.getYearsOfExperience());
+            existingRepresentative.setIsActive(representativeDTO.getIsActive());
+
+            // Save the updated representative
+            Representative updatedRepresentative = representativeRepository.save(existingRepresentative);
+            return representativeMapper.toDto(updatedRepresentative);
+        } else {
+            return null; // or throw an exception if preferred
+        }
+    }
+
     public LoginResponse authenticateRepresentative(LoginRequest loginRequest) {
         Representative representative = representativeRepository.findByEmail(loginRequest.getUsername());
         if (representative != null && representative.getPassword().equals(loginRequest.getPassword()) && representative.getIsActive()) {

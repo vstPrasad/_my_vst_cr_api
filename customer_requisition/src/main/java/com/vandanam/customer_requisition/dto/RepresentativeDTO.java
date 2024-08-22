@@ -10,6 +10,7 @@ public class RepresentativeDTO {
     private String name;
     private String mobile;
     private String email;
+    private String password;
     private Integer addressPlaceId;
     private String placeType;
     private String placeNumber;

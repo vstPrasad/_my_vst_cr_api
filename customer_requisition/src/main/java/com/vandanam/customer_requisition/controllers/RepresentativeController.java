@@ -5,8 +5,10 @@ import com.vandanam.customer_requisition.dto.LoginResponse;
 import com.vandanam.customer_requisition.dto.RepresentativeDTO;
 import com.vandanam.customer_requisition.services.RepresentativeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -33,13 +35,47 @@ public class RepresentativeController {
     }
 
     @GetMapping("/representatives/{id}")
-    public RepresentativeDTO getRepresentative(@PathVariable String id) {
-        return representativeService.getRepresentativeById(id);
+    public ResponseEntity<RepresentativeDTO> getRepresentative(@PathVariable String id) {
+        try {
+            RepresentativeDTO representative = representativeService.getRepresentativeById(id);
+            if (representative != null) {
+                return ResponseEntity.ok(representative);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(null);
+            }
+        } catch (Exception ex) {
+            // You can customize the exception handling here
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred while retrieving the representative", ex);
+        }
     }
 
+
     @GetMapping("/representatives")
-    public List<RepresentativeDTO> getAllRepresentatives() {
-        return representativeService.getAllRepresentatives();
+    public ResponseEntity<List<RepresentativeDTO>> getAllRepresentatives() {
+        try {
+            List<RepresentativeDTO> representatives = representativeService.getAllRepresentatives();
+            return ResponseEntity.ok(representatives);
+        } catch (Exception ex) {
+            // You can customize the exception handling here
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred while retrieving representatives", ex);
+        }
+    }
+
+    @PutMapping("/representatives/{id}")
+    public ResponseEntity<RepresentativeDTO> updateRepresentative(
+            @PathVariable String id,
+            @RequestBody RepresentativeDTO representativeDTO) {
+        try {
+            RepresentativeDTO updatedRepresentative = representativeService.updateRepresentative(id, representativeDTO);
+            if (updatedRepresentative != null) {
+                return ResponseEntity.ok(updatedRepresentative);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred while updating the representative", ex);
+        }
     }
 
     @DeleteMapping("/representatives/{id}")

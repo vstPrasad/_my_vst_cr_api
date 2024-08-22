@@ -6,7 +6,7 @@ import com.vandanam.customer_requisition.models.Taluka;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(componentModel = "spring")
+@Mapper
 public interface TalukaMapper{
     TalukaMapper INSTANCE = Mappers.getMapper(TalukaMapper.class);
 

@@ -6,7 +6,7 @@ import com.vandanam.customer_requisition.models.Village;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface VillageMapper {
     VillageMapper INSTANCE = Mappers.getMapper(VillageMapper.class);
 
